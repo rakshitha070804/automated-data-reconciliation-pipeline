@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Reconciliation Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 { color: #1e293b; }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .status {
+            margin-top: 25px;
+            padding: 15px;
+            background: #dbeafe;
+            border-radius: 8px;
+        }
+
+        @media(max-width: 600px) {
+            .cards { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Data Reconciliation Dashboard</h1>
+    <p>Source-to-Target Data Validation System</p>
+
+    <form action="/run" method="POST">
+        <button type="submit">Run Reconciliation</button>
+    </form>
+
+    {% if result %}
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Source Records</h3>
+            <div class="number">{{ result.source_input_count }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Target Records</h3>
+            <div class="number">{{ result.target_input_count }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Matched Records</h3>
+            <div class="number">{{ result.matched_count }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Mismatched Records</h3>
+            <div class="number">{{ result.field_mismatch_count }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Missing Records</h3>
+            <div class="number">{{ result.missing_in_target_count }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Extra Records</h3>
+            <div class="number">{{ result.extra_in_target_count }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Rejected Records</h3>
+            <div class="number">{{ result.rejected_count }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Source Amount</h3>
+            <div class="number">{{ result.source_amount_total }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Target Amount</h3>
+            <div class="number">{{ result.target_amount_total }}</div>
+        </div>
+
+    </div>
+
+    <div class="status">
+        <h3>Pipeline Status: {{ result.status }}</h3>
+        <p>Amount Difference: {{ result.amount_total_difference }}</p>
+        <p>Run ID: {{ result.run_id }}</p>
+    </div>
+
+    <p>Reports generated successfully in the output folder.</p>
+
+    {% endif %}
+
+</div>
+</body>
+</html>
